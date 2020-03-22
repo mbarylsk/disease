@@ -1,0 +1,10 @@
+python virus.py 100 100 100 4 2 10 2
+python virus.py 1000 1000 100 4 2 10 2
+python virus.py 10000 10000 100 4 2 10 2
+python virus.py 100 100 100 1 2 10 2
+python virus.py 100 100 100 2 2 10 2
+python virus.py 100 100 100 10 2 10 2
+python virus.py 100 100 100 4 1 2 5
+python virus.py 100 100 100 4 1 2 10
+python virus.py 100 100 100 4 10 2 10
+python virus.py 100 100 100 4 10 100 10
