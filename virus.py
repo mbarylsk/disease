@@ -20,12 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import numpy as np
-import matplotlib.pyplot as plt
 import graphs
 import person
 import calculations
 import sys
+
+# params: max_x, max_y, max_people, min_infect_distance, cure_chance_perc, move_chance_perc, can_be_sick_again_chance_perc
 
 min_x = 0
 max_x = int(sys.argv[1])
@@ -49,6 +49,7 @@ list_immune = []
 prefix = str(max_x) + "_" + str(max_y) + "_" + str(max_people) + "_" + str(min_infect_distance) + "_" + str(cure_chance_perc) + "_" + str(move_chance_perc) + "_" + str(can_be_sick_again_chance_perc)
 
 file_output_trend = "results/f_trend_" + prefix + ".png"
+file_output_location = "results/f_location_" + prefix + ".png"
 
 def calculate_stats (time):
     global list_sick, list_can_be_sick, list_immune
@@ -91,16 +92,7 @@ def print_stats (g):
             healthy_x.append (x)
             healthy_y.append (y)
 
-    fig=plt.figure()
-    ax=fig.add_axes([0,0,1,1])
-    ax.scatter(sick_x, sick_y, color='r')
-    ax.scatter(healthy_x, healthy_y, color='b')
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_title('Sick and healthy')
-    #plt.show()
-    plt.close()
-
+    g.plot_scatter_from_lists (sick_x, sick_y, healthy_x, healthy_y, file_output_location)
     g.plot_stackplot_from_lists (list_time_elapsed, list_can_be_sick, list_sick, list_immune, file_output_trend)
 
 g = graphs.Graphs()

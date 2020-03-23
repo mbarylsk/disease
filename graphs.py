@@ -30,20 +30,15 @@ import numpy as np
 
 class Graphs:
 
-    def plot_scatter_from_lists (self, time, can_be_sick, sick, immune, file_output):
+    def plot_scatter_from_lists (self, sick_x, sick_y, healthy_x, healthy_y, file_output):
 
-        fig = plt.figure(1)
-        blue_patch = mpatches.Patch(color='blue', label='healthy but can be sick')
-        red_patch = mpatches.Patch(color='red', label='sick')
-        green_patch = mpatches.Patch(color='green', label='immune')
-        plt.legend(handles=[blue_patch, red_patch, green_patch])
-        plt.plot(time, can_be_sick, 'b-', ms=1)
-        plt.plot(time, sick, 'r-', ms=1)
-        plt.plot(time, immune, 'g-', ms=1)
-        plt.xlabel('time')
-        plt.ylabel('Count')
-        plt.title('Sick / Can be sick / immune')
-        plt.grid(True)
+        fig = plt.figure()
+        ax = fig.add_axes([0,0,1,1])
+        ax.scatter(sick_x, sick_y, color='r')
+        ax.scatter(healthy_x, healthy_y, color='b')
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_title('Sick and healthy')
         plt.savefig(file_output)
         plt.close(fig)
 
