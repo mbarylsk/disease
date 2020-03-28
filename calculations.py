@@ -42,3 +42,9 @@ def calculate_distance (p1, p2):
 def propagate_health_state (p1, p2):
     if p1.can_infect() and not p2.is_immune ():
         p2.infect ()
+
+def get_avg_value_from_list (self, l):
+    if (len(l) > 0):
+        return (sum(l)/len(l))
+    else:
+        return 0

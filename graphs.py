@@ -56,3 +56,18 @@ class Graphs:
         plt.title(title)
         plt.savefig(file_output)
         plt.close(fig)
+
+    def plot_plot_from_lists (self, time, sick_avg, cured_avg, file_output):
+
+        fig = plt.figure()
+        plt.plot(time, sick_avg, 'r-', ms=1, label='Sick avg')
+        plt.plot(time, cured_avg, 'b-', ms=1, label='Cured avg')
+        red_patch = mpatches.Patch(color='red', label='Sick avg')
+        blue_patch = mpatches.Patch(color='blue', label='Cured avg')
+        plt.legend(handles=[red_patch, blue_patch])
+        plt.xlabel('Time')
+        plt.ylabel('Values')
+        plt.title('Average age values')
+        plt.grid(True)
+        plt.savefig(file_output)
+        plt.close(fig)

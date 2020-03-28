@@ -33,6 +33,8 @@ class Person:
     x = 0
     y = 0
     age = 0
+    age_sick = 0
+    age_healthy = 0
     max_x = 0
     max_y = 0
     
@@ -44,17 +46,29 @@ class Person:
         self.y = y
         self.max_x = max_x
         self.max_y = max_y
-        self.age = 0
+        self.age_sick = 0
+        self.age_cured = 0
 
     def get_positition (self):
         return (self.x, self.y)
+
+    def get_age (self):
+        return (self.age_sick, self.age_cured)
 
     def move (self):
         dx = random.randint (-5, 5)
         dy = random.randint (-5, 5)
         self.x = (self.x + dx) % self.max_x
         self.y = (self.y + dy) % self.max_y
+
+    def grow (self):
         self.age += 1
+        if self.is_sick():
+            self.age_sick += 1
+            self.age_cured = 0
+        elif self.is_cured():
+            self.age_sick = 0
+            self.age_cured += 1
 
     def set_health (self, s, c):
         self.sick = s

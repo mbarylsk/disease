@@ -45,11 +45,14 @@ list_time_elapsed = []
 list_can_be_sick = []
 list_sick = []
 list_immune = []
+list_sick_time_avg = []
+list_cured_time_avg = []
 
 prefix = str(max_x) + "_" + str(max_y) + "_" + str(max_people) + "_" + str(min_infect_distance) + "_" + str(cure_chance_perc) + "_" + str(move_chance_perc) + "_" + str(can_be_sick_again_chance_perc)
 
-file_output_trend = "results/f_trend_" + prefix + ".png"
-file_output_location = "results/f_location_" + prefix + ".png"
+file_output_trend = "results/f_" + prefix + "_trend.png"
+file_output_location = "results/f_" + prefix + "_location.png"
+file_output_avg = "results/f_" + prefix + "_avg.png"
 
 def calculate_stats (time):
     global list_sick, list_can_be_sick, list_immune
@@ -57,11 +60,17 @@ def calculate_stats (time):
     count_sick = 0
     count_healthy_but_can_be_sick = 0
     count_cured = 0
+    total_sick_time = 0
+    total_cured_time = 0
+    
     for j in range (0, max_people):
+        (age_sick, age_cured) = people[j].get_age()
         if people[j].is_sick():
             count_sick += 1
+            total_sick_time += age_sick
         elif people[j].is_cured():
             count_cured += 1
+            total_cured_time += age_cured
         else:
             count_healthy_but_can_be_sick += 1
 
@@ -69,6 +78,17 @@ def calculate_stats (time):
     list_can_be_sick.append (count_healthy_but_can_be_sick)
     list_immune.append (count_cured)
     list_time_elapsed.append (time)
+
+    if count_sick > 0:
+        sick_time_avg = total_sick_time/count_sick
+    else:
+        sick_time_avg = 0
+    if count_cured > 0:
+        cured_time_avg = total_cured_time/count_cured
+    else:
+        cured_time_avg = 0
+    list_sick_time_avg.append (sick_time_avg)
+    list_cured_time_avg.append (cured_time_avg)
     
     return (count_sick, count_healthy_but_can_be_sick, count_cured)
 
@@ -94,6 +114,7 @@ def print_stats (g):
 
     g.plot_scatter_from_lists (sick_x, sick_y, healthy_x, healthy_y, file_output_location)
     g.plot_stackplot_from_lists (list_time_elapsed, list_can_be_sick, list_sick, list_immune, file_output_trend)
+    g.plot_plot_from_lists (list_time_elapsed, list_sick_time_avg, list_cured_time_avg, file_output_avg)
 
 g = graphs.Graphs()
 
@@ -142,6 +163,9 @@ for i in range (0, no_of_turns):
             if r <= can_be_sick_again_chance_perc:
                 people[j].healthy_but_can_be_sick_again()
 
+    # grow
+    for j in range (0, max_people):
+        people[j].grow()
 
 calculate_stats (i)
 print_stats (g)
