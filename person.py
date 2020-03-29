@@ -29,14 +29,17 @@ import random
 class Person:
     idp = 0
     sick = False
-    cured = False
+    cured = False       # if is not seek and cured, then is immune
     x = 0
     y = 0
     age = 0
     age_sick = 0
-    age_healthy = 0
+    age_cured = 0
+    age_healthy_but_can_be_sick = 0
     max_x = 0
     max_y = 0
+    delta_x = 10
+    delta_y = 10
     
     def __init__(self, idp, s, c, x, y, max_x, max_y):
         self.idp = idp
@@ -53,11 +56,11 @@ class Person:
         return (self.x, self.y)
 
     def get_age (self):
-        return (self.age_sick, self.age_cured)
+        return (self.age_sick, self.age_cured, self.age_healthy_but_can_be_sick)
 
     def move (self):
-        dx = random.randint (-5, 5)
-        dy = random.randint (-5, 5)
+        dx = random.randint (-self.delta_x, self.delta_x)
+        dy = random.randint (-self.delta_y, self.delta_y)
         self.x = (self.x + dx) % self.max_x
         self.y = (self.y + dy) % self.max_y
 
@@ -66,9 +69,15 @@ class Person:
         if self.is_sick():
             self.age_sick += 1
             self.age_cured = 0
+            self.age_healthy_but_can_be_sick = 0
         elif self.is_cured():
             self.age_sick = 0
             self.age_cured += 1
+            self.age_healthy_but_can_be_sick = 0
+        else:
+            self.age_sick = 0
+            self.age_cured = 0
+            self.age_healthy_but_can_be_sick += 1
 
     def set_health (self, s, c):
         self.sick = s

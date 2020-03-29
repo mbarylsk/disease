@@ -1,10 +1,20 @@
-python virus.py 100 100 100 4 2 10 2
-python virus.py 1000 1000 100 4 2 10 2
-python virus.py 10000 10000 100 4 2 10 2
-python virus.py 100 100 100 1 2 10 2
-python virus.py 100 100 100 2 2 10 2
-python virus.py 100 100 100 10 2 10 2
-python virus.py 100 100 100 4 1 2 5
-python virus.py 100 100 100 4 1 2 10
-python virus.py 100 100 100 4 10 2 10
-python virus.py 100 100 100 4 10 100 10
+python virus.py 100 100 1000 4 2 10 2 10000
+python virus.py 1000 1000 1000 4 2 10 2 10000
+python virus.py 1000 1000 100 4 2 10 2 10000
+python virus.py 10000 10000 100 4 2 10 2 10000
+python virus.py 100 100 100 1 2 10 2 10000
+python virus.py 100 100 100 2 2 10 2 10000
+python virus.py 100 100 100 10 2 10 2 10000
+python virus.py 100 100 100 4 1 2 5 10000
+python virus.py 100 100 100 4 1 2 10 10000
+python virus.py 100 100 100 4 2 2 10 10000
+python virus.py 100 100 100 4 2 100 10 10000
+python virus.py 100 100 1000 2 1 100 1 10000
+python virus.py 100 100 1000 2 1 80 1 10000
+python virus.py 100 100 1000 2 1 50 1 10000
+python virus.py 100 100 1000 2 1 40 1 10000
+python virus.py 100 100 1000 2 1 35 1 10000
+python virus.py 100 100 1000 2 1 30 1 10000
+python virus.py 100 100 1000 2 1 25 1 10000
+python virus.py 100 100 1000 2 1 20 1 10000
+python virus.py 100 100 1000 2 1 5 1 10000

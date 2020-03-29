@@ -25,7 +25,7 @@ import person
 import calculations
 import sys
 
-# params: max_x, max_y, max_people, min_infect_distance, cure_chance_perc, move_chance_perc, can_be_sick_again_chance_perc
+# params: max_x, max_y, max_people, min_infect_distance, cure_chance_perc, move_chance_perc, can_be_sick_again_chance_perc, no_of_turns
 
 min_x = 0
 max_x = int(sys.argv[1])
@@ -33,13 +33,13 @@ min_y = 0
 max_y = int(sys.argv[2])
 max_people = int(sys.argv[3])
 people = []
-no_of_turns = 1000
 initial_no_of_sick = 1
 
 min_infect_distance = int(sys.argv[4])
 cure_chance_perc = int(sys.argv[5])
 move_chance_perc = int(sys.argv[6])
 can_be_sick_again_chance_perc = int(sys.argv[7])
+no_of_turns = int(sys.argv[8])
             
 list_time_elapsed = []
 list_can_be_sick = []
@@ -47,8 +47,9 @@ list_sick = []
 list_immune = []
 list_sick_time_avg = []
 list_cured_time_avg = []
+list_healthy_but_can_be_sick_time_avg = []
 
-prefix = str(max_x) + "_" + str(max_y) + "_" + str(max_people) + "_" + str(min_infect_distance) + "_" + str(cure_chance_perc) + "_" + str(move_chance_perc) + "_" + str(can_be_sick_again_chance_perc)
+prefix = str(max_x) + "_" + str(max_y) + "_" + str(max_people) + "_" + str(min_infect_distance) + "_" + str(cure_chance_perc) + "_" + str(move_chance_perc) + "_" + str(can_be_sick_again_chance_perc) + "_" + str(no_of_turns)
 
 file_output_trend = "results/f_" + prefix + "_trend.png"
 file_output_location = "results/f_" + prefix + "_location.png"
@@ -62,9 +63,10 @@ def calculate_stats (time):
     count_cured = 0
     total_sick_time = 0
     total_cured_time = 0
+    total_healthy_but_can_be_sick_time = 0
     
     for j in range (0, max_people):
-        (age_sick, age_cured) = people[j].get_age()
+        (age_sick, age_cured, age_healthy_but_can_be_sick) = people[j].get_age()
         if people[j].is_sick():
             count_sick += 1
             total_sick_time += age_sick
@@ -73,6 +75,7 @@ def calculate_stats (time):
             total_cured_time += age_cured
         else:
             count_healthy_but_can_be_sick += 1
+            total_healthy_but_can_be_sick_time += age_healthy_but_can_be_sick
 
     list_sick.append (count_sick)
     list_can_be_sick.append (count_healthy_but_can_be_sick)
@@ -87,8 +90,14 @@ def calculate_stats (time):
         cured_time_avg = total_cured_time/count_cured
     else:
         cured_time_avg = 0
+    if count_healthy_but_can_be_sick > 0:
+        healthy_but_can_be_sick_time_avg = total_healthy_but_can_be_sick_time/count_healthy_but_can_be_sick
+    else:
+        healthy_but_can_be_sick_time_avg = 0
+        
     list_sick_time_avg.append (sick_time_avg)
     list_cured_time_avg.append (cured_time_avg)
+    list_healthy_but_can_be_sick_time_avg.append (healthy_but_can_be_sick_time_avg)
     
     return (count_sick, count_healthy_but_can_be_sick, count_cured)
 
@@ -114,7 +123,7 @@ def print_stats (g):
 
     g.plot_scatter_from_lists (sick_x, sick_y, healthy_x, healthy_y, file_output_location)
     g.plot_stackplot_from_lists (list_time_elapsed, list_can_be_sick, list_sick, list_immune, file_output_trend)
-    g.plot_plot_from_lists (list_time_elapsed, list_sick_time_avg, list_cured_time_avg, file_output_avg)
+    g.plot_plot_from_lists (list_time_elapsed, list_sick_time_avg, list_cured_time_avg, list_healthy_but_can_be_sick_time_avg, file_output_avg)
 
 g = graphs.Graphs()
 
@@ -144,15 +153,13 @@ for i in range (0, no_of_turns):
     # infect
     for j in range (0, max_people):
         for k in range (0, max_people):
-            if j != k:
-                if calculations.calculate_distance (people[j], people[k]) < min_infect_distance:
-                    if not people[k].is_cured():
-                        people[k].infect()
+            if j != k and people[j].is_sick() and calculations.calculate_distance (people[j], people[k]) < min_infect_distance and not people[k].is_cured():
+                people[k].infect()
 
     # cure
     for j in range (0, max_people):
         if people[j].is_sick():
-            r = calculations.get_random_percent (0)
+            r = calculations.get_random_percent (2)
             if r <= cure_chance_perc:
                 people[j].cure()
 
